@@ -24,7 +24,7 @@ const Example = () => (
     <S.GlobalStyle />
 
     <S.Content>
-      <S.Title>@pretto/picto</S.Title>
+      <S.Title>{process.env.TITLE}</S.Title>
 
       <S.Grid>
         {Object.entries(P).map(([key, Picto]) => {

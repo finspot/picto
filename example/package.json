@@ -1,6 +1,5 @@
 {
   "name": "example",
-  "version": "1.0.0",
   "author": "Sylvain Reucherand <sylvain@pretto.fr>",
   "devDependencies": {
     "@babel/core": "^7.12.10",

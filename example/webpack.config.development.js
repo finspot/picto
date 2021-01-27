@@ -1,5 +1,10 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
+const webpack = require('webpack')
+
+const pkg = require('../package.json')
+
+const title = `${pkg.name} (v${pkg.version})`
 
 module.exports = {
   devServer: {
@@ -35,7 +40,13 @@ module.exports = {
     publicPath: '/',
   },
 
-  plugins: [new HtmlWebpackPlugin()],
+  plugins: [
+    new HtmlWebpackPlugin({ title }),
+
+    new webpack.EnvironmentPlugin({
+      TITLE: title,
+    }),
+  ],
 
   stats: 'errors-warning',
 }

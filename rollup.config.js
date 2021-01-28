@@ -8,6 +8,12 @@ const { uglify } = require('rollup-plugin-uglify')
 
 const inputs = glob.sync(path.join(__dirname, 'svg/*.svg'))
 
+const svgConfig = {
+  svgo: {
+    plugins: [{ removeTitle: false }, { removeViewBox: false }],
+  },
+}
+
 const cjs = [
   ...inputs.map(input => ({
     external: 'react',
@@ -22,13 +28,7 @@ const cjs = [
       sourcemap: true,
     },
 
-    plugins: [
-      svg({
-        svgo: {
-          plugins: [{ removeTitle: false }],
-        },
-      }),
-    ],
+    plugins: [svg(svgConfig)],
   })),
 
   {
@@ -44,11 +44,7 @@ const cjs = [
     },
 
     plugins: [
-      svg({
-        svgo: {
-          plugins: [{ removeTitle: false }],
-        },
-      }),
+      svg(svgConfig),
 
       babel({
         babelHelpers: 'bundled',
@@ -70,11 +66,7 @@ const cjs = [
     },
 
     plugins: [
-      svg({
-        svgo: {
-          plugins: [{ removeTitle: false }],
-        },
-      }),
+      svg(svgConfig),
 
       babel({
         babelHelpers: 'bundled',
@@ -99,11 +91,7 @@ const esm = [
     },
 
     plugins: [
-      svg({
-        svgo: {
-          plugins: [{ removeTitle: false }],
-        },
-      }),
+      svg(svgConfig),
 
       babel({
         babelHelpers: 'runtime',

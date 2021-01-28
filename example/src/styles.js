@@ -30,7 +30,7 @@ export const Content = styled.div`
 export const Grid = styled.div`
   display: grid;
   grid-gap: 24px;
-  grid-template-columns: repeat(auto-fill, 128px);
+  grid-template-columns: repeat(auto-fill, 144px);
   grid-template-rows: 24px;
 `
 

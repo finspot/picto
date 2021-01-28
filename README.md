@@ -10,7 +10,7 @@ Provides a pictogram set used by the design system and other tools.
 
 1. Add a new svg file under the svg folder
 
-Name it properly! The name defines the final export name of the component. Names are formatted into pascal case so *web.svg* will be imported like `import { Web } from '@pretto/picto'.` Avoid duplicates.
+Name it properly! The name defines the final export name of the component. Names are formatted into pascal case so *line-web.svg* will be imported like `import { LineWeb } from '@pretto/picto'.` Avoid duplicates.
 
 2. Open a pull request
 
@@ -25,23 +25,23 @@ index.js (preferred syntax)
 ```jsx
 import * as P from '@pretto/picto'
 
-const myComponent = () => <P.Web />
+const myComponent = () => <P.LineWeb />
 ```
 
 index.js (alternative)
 
 ```jsx
-import { Web } from '@pretto/picto'
+import { LineWeb } from '@pretto/picto'
 
-const myComponent = () => <Web />
+const myComponent = () => <LineWeb />
 ```
 
 index.js (alternative)
 
 ```jsx
-import Web from '@pretto/picto/cjs/Web'
+import LineWeb from '@pretto/picto/cjs/LineWeb'
 
-const myComponent = () => <Web />
+const myComponent = () => <LineWeb />
 ```
 
 ### How to publish a new version?

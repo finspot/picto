@@ -7,7 +7,7 @@ on:
 
 jobs:
   tag:
-    if: startsWith(github.event.head_commit.message, '[Release]') == 'false'
+    if: ${{ startsWith(github.event.head_commit.message, '[Release]') == false }}
 
     runs-on: ubuntu-latest
     

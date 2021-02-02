@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'picto@*'
+      - picto@*
 
 jobs:
   github-pages:

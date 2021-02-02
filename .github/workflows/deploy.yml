@@ -33,6 +33,6 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
+          ACCESS_TOKEN: ${{ secrets.BOT_TOKEN }}
           BRANCH: gh-pages
           FOLDER: example/public
-          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}

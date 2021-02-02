@@ -1,4 +1,4 @@
-name: Release
+name: Publish
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  tag:
+  publish:
     if: ${{ startsWith(github.event.head_commit.message, '[Release]') == false }}
 
     runs-on: ubuntu-latest
@@ -32,3 +32,31 @@ jobs:
           github_token: ${{ secrets.BOT_PAT }}
           branch: master
           tags: true
+
+      - name: Restore node_modules from cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Build library
+        run: |
+          yarn
+          yarn build
+      
+      - name: Publish
+        run: echo 'PUBLISHING...'
+#        run: npm publish
+
+      - name: Build example
+        run: |
+          yarn
+          yarn build
+        working-directory: example
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          BRANCH: gh-pages
+          FOLDER: example/public
+          GITHUB_TOKEN: ${{ secrets.BOT_PAT }}

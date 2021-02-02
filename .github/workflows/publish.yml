@@ -10,7 +10,7 @@ jobs:
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-    if: ${{ startsWith(github.event.head_commit.message, '[Release]') == false }}
+    if: ${{ startsWith(github.event.head_commit.message, '[Release]') == true }}
 
     runs-on: ubuntu-latest
     
@@ -27,7 +27,7 @@ jobs:
           git config --local user.name "pretto-bot"
       
       - name: Version
-        run: npm version minor -m "[Release] picto@%s"
+        run: npm version minor -m "[CI] picto@%s"
         
       - name: Push
         uses: ad-m/github-push-action@v0.6.0

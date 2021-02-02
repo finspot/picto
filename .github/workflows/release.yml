@@ -6,17 +6,20 @@ on:
       - master
 
 jobs:
-  release:
+  tag:
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Config
         run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config --local user.email "tech+githubbot@pretto.fr"
+          git config --local user.name "pretto-bot"
       
       - name: Version
         run: npm version minor -m "[Release] picto@%s"
@@ -27,38 +30,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
           tags: true
-
-#      - name: Release
-#        uses: actions/create-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          release_name: ${{ github.ref }}
-#          tag_name: ${{ github.ref }}
-        
-      - name: Restore node_modules from cache
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Build library
-        run: |
-          yarn
-          yarn build
-      
-#      - name: Publish
-#        run: npm publish
-
-      - name: Build example
-        run: |
-          yarn
-          yarn build
-        working-directory: example
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          BRANCH: gh-pages
-          FOLDER: example/public
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

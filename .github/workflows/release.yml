@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.PAT }}
       
       - name: Version
         run: npm version minor -m "[Release] picto@%s"
@@ -21,6 +19,7 @@ jobs:
       - name: Push
         uses: ad-m/github-push-action@v0.6.0
         with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: master
           tags: true
 
@@ -55,6 +54,6 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
-          ACCESS_TOKEN: ${{ secrets.PAT }}
           BRANCH: gh-pages
           FOLDER: example/public
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

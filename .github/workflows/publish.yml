@@ -29,7 +29,7 @@ jobs:
       - name: Push
         uses: ad-m/github-push-action@v0.6.0
         with:
-          github_token: ${{ secrets.BOT_PAT }}
+          github_token: ${{ secrets.BOT_TOKEN }}
           branch: master
           tags: true
 
@@ -45,8 +45,9 @@ jobs:
           yarn build
       
       - name: Publish
-        run: echo 'PUBLISHING...'
-#        run: npm publish
+        run: npm publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build example
         run: |
@@ -59,4 +60,4 @@ jobs:
         with:
           BRANCH: gh-pages
           FOLDER: example/public
-          GITHUB_TOKEN: ${{ secrets.BOT_PAT }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}

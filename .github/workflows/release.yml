@@ -7,23 +7,13 @@ on:
 
 jobs:
   release:
-    env:
-      GIT_CONFIG_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-      GIT_CONFIG_NAME: github-actions[bot]
-
     runs-on: ubuntu-latest
     
     steps:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
-          persist-credentials: false
-        
-      - name: Config
-        run: |
-          git config --local user.email "$GIT_CONFIG_EMAIL"
-          git config --local user.name "$GIT_CONFIG_NAME"
+          token: ${{ secrets.PAT }}
       
       - name: Version
         run: npm version minor -m "[Release] picto@%s"
@@ -32,7 +22,6 @@ jobs:
         uses: ad-m/github-push-action@v0.6.0
         with:
           branch: master
-          github_token: ${{ secrets.GITHUB_TOKEN }}
           tags: true
 
 #      - name: Release
@@ -66,8 +55,6 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
+          ACCESS_TOKEN: ${{ secrets.PAT }}
           BRANCH: gh-pages
           FOLDER: example/public
-          GIT_CONFIG_EMAIL: ${{ env.GIT_CONFIG_EMAIL }}
-          GIT_CONFIG_NAME: ${{ env.GIT_CONFIG_NAME }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

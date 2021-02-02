@@ -49,16 +49,3 @@ jobs:
       
       - name: Publish
         run: npm publish
-
-      - name: Build example
-        run: |
-          yarn
-          yarn build
-        working-directory: example
-
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          BRANCH: gh-pages
-          FOLDER: example/public
-          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}

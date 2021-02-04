@@ -7,13 +7,10 @@ on:
 
 jobs:
   publish:
-    env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-    if: ${{ startsWith(github.event.head_commit.message, '[Release]') == true }}
+    if: ${{ startsWith(github.event.head_commit.message, '[Release]') == true }}
 
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -21,14 +18,20 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Setup
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+          registry-url: 'https://registry.npmjs.org'
+
       - name: Config
         run: |
           git config --local user.email "tech+githubbot@pretto.fr"
           git config --local user.name "pretto-bot"
-      
+
       - name: Version
         run: npm version minor -m "[CI] picto@%s"
-        
+
       - name: Push
         uses: ad-m/github-push-action@v0.6.0
         with:
@@ -46,6 +49,8 @@ jobs:
         run: |
           yarn
           yarn build
-      
+
       - name: Publish
         run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

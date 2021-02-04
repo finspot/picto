@@ -10,7 +10,7 @@ const inputs = glob.sync(path.join(__dirname, 'svg/*.svg'))
 
 const svgConfig = {
   svgo: {
-    plugins: [{ removeTitle: false }, { removeViewBox: false }],
+    plugins: [{ removeViewBox: false }],
   },
 }
 

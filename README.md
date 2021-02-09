@@ -10,9 +10,11 @@ Provides a pictogram set used by the design system and other tools.
 
 1. Add a new svg file under the svg folder
 
-Name it properly! The name defines the final export name of the component. Names are formatted into pascal case so *line-web.svg* will be imported like `import { LineWeb } from '@pretto/picto'.` Avoid duplicates.
+Name it properly! The name defines the final export name of the component. Names are formatted into pascal case so *envelope.svg* will be imported like `import { Envelope } from '@pretto/picto'.` Avoid duplicates.
 
 2. Open a pull request
+
+3. Name the pull request starting with `[Release]` if you wanna publish a new version automatically (you probably want to).
 
 ### How to implement the library?
 
@@ -25,23 +27,23 @@ index.js (preferred syntax)
 ```jsx
 import * as P from '@pretto/picto'
 
-const myComponent = () => <P.LineWeb />
+const myComponent = () => <P.Envelope />
 ```
 
 index.js (alternative)
 
 ```jsx
-import { LineWeb } from '@pretto/picto'
+import { Envelope } from '@pretto/picto'
 
-const myComponent = () => <LineWeb />
+const myComponent = () => <Envelope />
 ```
 
 index.js (alternative)
 
 ```jsx
-import LineWeb from '@pretto/picto/cjs/LineWeb'
+import Envelope from '@pretto/picto/cjs/Envelope'
 
-const myComponent = () => <LineWeb />
+const myComponent = () => <Envelope />
 ```
 
 ### How to publish a new version?

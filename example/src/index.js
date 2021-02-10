@@ -34,7 +34,7 @@ const Example = () => (
 
           return (
             <S.PictoButton key={key} onClick={handleClick} type="button">
-              <Picto fill="currentcolor" height="24" width="24" />
+              <Picto height="24" width="24" />
               <span>{key}</span>
             </S.PictoButton>
           )

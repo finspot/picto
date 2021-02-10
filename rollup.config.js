@@ -10,7 +10,23 @@ const inputs = glob.sync(path.join(__dirname, 'svg/*.svg'))
 
 const svgConfig = {
   svgo: {
-    plugins: [{ removeViewBox: false }],
+    plugins: [
+      {
+        removeAttrs: {
+          attrs: 'fill',
+        },
+      },
+      { removeViewBox: false },
+      {
+        addAttributesToSVGElement: {
+          attributes: [
+            {
+              fill: 'currentColor',
+            },
+          ],
+        },
+      },
+    ],
   },
 }
 

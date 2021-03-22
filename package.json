@@ -1,6 +1,6 @@
 {
   "name": "@pretto/picto",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "repository": "git@github.com:finspot/picto.git",
   "author": "Sylvain Reucherand <sylvain@pretto.fr>",
   "files": [

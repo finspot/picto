@@ -5,13 +5,15 @@
     "@babel/core": "^7.12.10",
     "@pretto/picto": "../",
     "babel-loader": "^8.2.2",
+    "babel-plugin-styled-components": "^1.12.0",
     "babel-preset-react-app": "^10.0.0",
     "html-webpack-plugin": "^4.5.1",
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.17.0",
     "webpack-bundle-analyzer": "^4.4.0",
     "webpack-cli": "^4.4.0",
-    "webpack-dev-server": "^3.11.2"
+    "webpack-dev-server": "^3.11.2",
+    "webpack-manifest-plugin": "^3.1.0"
   },
   "dependencies": {
     "react": "^17.0.1",
@@ -19,7 +21,8 @@
     "styled-components": "^5.2.1"
   },
   "scripts": {
-    "build": "NODE_ENV=production webpack --config webpack.config.production.js --progress",
-    "start": "NODE_ENV=development webpack serve --config webpack.config.development.js --progress"
+    "build": "NODE_ENV=production webpack --config webpack.config.production.browser.js --progress",
+    "start": "NODE_ENV=development webpack serve --config webpack.config.development.browser.js --progress",
+    "static": "NODE_ENV=production webpack --config webpack.config.production.static.js --progress && node .bin/index"
   }
 }

@@ -9,7 +9,7 @@ const pkg = require('../package.json')
 const title = `${pkg.name} (v${pkg.version})`
 
 module.exports = {
-  entry: path.join(__dirname, 'src/index'),
+  entry: path.join(__dirname, 'src/index.browser'),
 
   mode: 'production',
 

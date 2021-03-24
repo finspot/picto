@@ -63,6 +63,29 @@ export const PictoButton = styled.button`
   }
 `
 
+export const ShowMore = styled.div`
+  margin-top: 40px;
+  text-align: center;
+`
+
+export const ShowMoreButton = styled.button`
+  appearance: none;
+  background: inherit;
+  border: 1px solid currentColor;
+  border-radius: 18px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  outline: 0;
+  padding: 8px 16px;
+  transition: color 400ms cubic-bezier(0.25, 1, 0.5, 1);
+
+  &:focus,
+  &:hover {
+    color: darkRed;
+  }
+`
+
 export const Title = styled.h1`
   margin-bottom: 24px;
 

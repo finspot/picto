@@ -16,7 +16,7 @@ module.exports = {
 
   devtool: 'eval',
 
-  entry: path.join(__dirname, 'src/index'),
+  entry: path.join(__dirname, 'src/index.browser'),
 
   mode: 'development',
 

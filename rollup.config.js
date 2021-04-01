@@ -5,6 +5,7 @@ const glob = require('glob')
 const pascalcase = require('pascalcase')
 const path = require('path')
 const { optimize } = require('svgo')
+const alias = require('@rollup/plugin-alias')
 const { uglify } = require('rollup-plugin-uglify')
 const { createFilter } = require('rollup-pluginutils')
 
@@ -59,7 +60,7 @@ const transformSvgToComponent = code =>
     configFile: false,
     plugins: [
       require.resolve('babel-plugin-html-attributes-to-jsx'),
-      require.resolve('@babel/plugin-transform-react-jsx'),
+      require.resolve('@babel/plugin-syntax-jsx'),
 
       ({ types }) => {
         const restElement = types.restElement ? types.restElement : types.restProperty
@@ -107,10 +108,19 @@ const transformSvgToComponent = code =>
         }
 
         const svgVisitor = {
+          JSXClosingElement(path) {
+            if (path.node.name.name.toLowerCase() !== 'svg') {
+              return
+            }
+
+            path.node.name.name = 'Component'
+          },
+
           JSXOpeningElement(path) {
             if (path.node.name.name.toLowerCase() !== 'svg') {
               return
             }
+
             path.node.attributes.push(types.jSXSpreadAttribute(types.identifier('props')))
             path.node.name.name = 'Component'
           },
@@ -123,25 +133,58 @@ const transformSvgToComponent = code =>
     ],
   })
 
-const cjs = [
-  ...inputs.map(input => ({
-    external: 'react',
+const cjs = modules => [
+  ...Object.entries(modules).map(([name, { outputFile }]) => ({
+    external: ['./core', 'react'],
 
-    input,
+    input: outputFile,
 
     output: {
       esModule: false,
       exports: 'default',
-      file: `cjs/${pascalcase(path.basename(input, '.svg'))}.js`,
+      file: `cjs/${name}.js`,
       format: 'cjs',
       sourcemap: true,
     },
 
-    plugins: [svg(svgConfig)],
+    plugins: [
+      alias({
+        entries: [{ find: '../core', replacement: './core' }],
+      }),
+
+      svg(svgConfig),
+
+      babel({
+        babelHelpers: 'bundled',
+        exclude: /node_modules/,
+        extensions: ['.js', '.svg'],
+      }),
+    ],
   })),
 
   {
-    external: 'react',
+    external: ['nanoid', 'react'],
+
+    input: path.join(__dirname, 'core'),
+
+    output: {
+      esModule: false,
+      exports: 'named',
+      file: `cjs/core.js`,
+      format: 'cjs',
+      sourcemap: true,
+    },
+
+    plugins: [
+      babel({
+        babelHelpers: 'bundled',
+        exclude: /node_modules/,
+      }),
+    ],
+  },
+
+  {
+    external: ['nanoid', 'react'],
 
     input: path.join(__dirname, 'modules/index.js'),
 
@@ -158,12 +201,13 @@ const cjs = [
       babel({
         babelHelpers: 'bundled',
         exclude: /node_modules/,
+        extensions: ['.js', '.svg'],
       }),
     ],
   },
 
   {
-    external: 'react',
+    external: ['nanoid', 'react'],
 
     input: path.join(__dirname, 'modules/index.js'),
 
@@ -180,6 +224,7 @@ const cjs = [
       babel({
         babelHelpers: 'bundled',
         exclude: /node_modules/,
+        extensions: ['.js', '.svg'],
       }),
 
       uglify(),
@@ -189,7 +234,7 @@ const cjs = [
 
 const esm = [
   {
-    external: 'react',
+    external: [/@babel\/runtime/, 'nanoid', 'react'],
 
     input: path.join(__dirname, 'modules/index.js'),
 
@@ -205,6 +250,7 @@ const esm = [
       babel({
         babelHelpers: 'runtime',
         exclude: /node_modules/,
+        extensions: ['.js', '.svg'],
         plugins: [['@babel/transform-runtime', { useESModules: true }]],
       }),
     ],
@@ -221,21 +267,21 @@ module.exports = () => {
 
     const code = `import React, { useContext, useEffect } from 'react'
 
-import { PictoContext } from '../picto'
+import { PictoContext } from '../core'
 import ${name} from '${origin}'
 
 export default function WrappedPicto(props) {
-  const { optimise, refresh } = useContext(PictoContext)
+  const { optimise, prefix, refresh } = useContext(PictoContext)
 
   useEffect(() => {
     refresh()
   }, [])
 
   return optimise(
-    '${name}',
+    '${name}_' + prefix,
     <${name} {...props} />,
     <svg {...props} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-      <use xlinkHref="#${name}" />
+      <use xlinkHref={'#${name}_' + prefix} />
     </svg>
   )
 }
@@ -245,7 +291,7 @@ export default function WrappedPicto(props) {
   }, {})
 
   const manifest = `export default ${JSON.stringify(Object.keys(modules))}`
-  const index = `export { PictoProvider } from '../picto'
+  const index = `export { PictoProvider } from '../core'
 export { default as manifest } from './manifest.js'
 ${Object.keys(modules)
   .map(name => `export { default as ${name} } from './${name}.js'`)
@@ -259,5 +305,5 @@ ${Object.keys(modules)
   fs.outputFileSync(path.join(outputPath, 'manifest.js'), manifest)
   fs.outputFileSync(path.join(outputPath, 'index.js'), index)
 
-  return [...cjs, ...esm]
+  return [...cjs(modules), ...esm]
 }

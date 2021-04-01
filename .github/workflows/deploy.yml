@@ -21,7 +21,7 @@ jobs:
       - name: Build example
         run: |
           yarn
-          yarn build
+          yarn static
         working-directory: example
 
       - name: Deploy

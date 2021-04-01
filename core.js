@@ -1,7 +1,11 @@
 import React, { cloneElement, createContext, useCallback, useRef, useState } from 'react'
+import { customAlphabet } from 'nanoid'
+
+const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 5)
 
 export const PictoContext = createContext({
   optimise: (id, node) => node,
+  prefix: nanoid(),
   refresh: () => {},
 })
 
@@ -10,6 +14,7 @@ export const PictoProvider = ({ children }) => {
 
   const cache = useRef({})
   const isPending = useRef(false)
+  const prefix = useRef(nanoid())
 
   const value = {
     optimise(id, originalNode, optimisedNode) {
@@ -20,6 +25,8 @@ export const PictoProvider = ({ children }) => {
 
       return optimisedNode
     },
+
+    prefix: prefix.current,
 
     refresh() {
       if (!isPending) {
@@ -50,8 +57,10 @@ const Symbols = ({ cache }) => {
   }
 
   return (
-    <svg style={{ display: 'none' }}>
-      {Object.entries(cache.current).map(([id, node]) => cloneElement(node, { as: 'symbol', id }))}
+    <svg style={{ display: 'none' }} xmlns="http://www.w3.org/2000/svg">
+      {Object.entries(cache.current).map(([id, node]) =>
+        cloneElement(node, { as: 'symbol', className: null, id, key: id, xmlns: null })
+      )}
     </svg>
   )
 }

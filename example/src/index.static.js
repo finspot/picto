@@ -5,7 +5,7 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { ServerStyleSheet } from 'styled-components'
 
-import App from './app'
+import App from './App'
 
 const manifest = __non_webpack_require__('./manifest.json')
 

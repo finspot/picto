@@ -19,7 +19,7 @@ module.exports = [
 
       new WebpackManifestPlugin({
         fileName: path.join(__dirname, '.bin/manifest.json'),
-        publicPath: '/',
+        publicPath: '',
       }),
 
       ...(process.env.ANALYSE === 'true' ? [new BundleAnalyzerPlugin()] : []),

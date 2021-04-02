@@ -23,9 +23,9 @@ const svg = options => {
       const content = fs.readFileSync(id).toString()
 
       const { data } = await optimize(content, { ...options.svgo })
-      const result2 = transformSvgToComponent(data)
+      const result = transformSvgToComponent(data)
 
-      return result2.code
+      return result.code
     },
   }
 }

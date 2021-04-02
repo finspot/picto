@@ -17,16 +17,20 @@ export const PictoProvider = ({ children }) => {
   const prefix = useRef(nanoid())
 
   const value = {
-    optimise(id, originalNode, optimisedNode) {
-      if (!(id in cache.current)) {
-        cache.current = { ...cache.current, [id]: originalNode }
+    optimise(baseID, node) {
+      const prefixedID = baseID + '_' + prefix.current
+
+      if (!(prefixedID in cache.current)) {
+        cache.current = { ...cache.current, [prefixedID]: node }
         isPending.current = true
       }
 
-      return optimisedNode
+      return cloneElement(
+        node,
+        { fill: null, xmlnsXlink: 'http://www.w3.org/1999/xlink' },
+        <use xlinkHref={'#' + prefixedID} />
+      )
     },
-
-    prefix: prefix.current,
 
     refresh() {
       if (!isPending) {
@@ -59,7 +63,7 @@ const Symbols = ({ cache }) => {
   return (
     <svg style={{ display: 'none' }} xmlns="http://www.w3.org/2000/svg">
       {Object.entries(cache.current).map(([id, node]) =>
-        cloneElement(node, { as: 'symbol', className: null, id, key: id, xmlns: null })
+        cloneElement(node, { as: 'symbol', className: null, height: null, id, key: id, width: null, xmlns: null })
       )}
     </svg>
   )

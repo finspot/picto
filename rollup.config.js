@@ -86,6 +86,18 @@ const transformSvgToComponent = code =>
               return
             }
 
+            const children = types.jsxFragment(
+              types.jSXOpeningFragment(),
+              types.jSXClosingFragment(),
+              path.get('expression.children').map(({ node }) => node)
+            )
+
+            path.node.expression.children = [
+              types.objectExpression([
+                types.objectProperty(types.identifier('children'), types.identifier('children'), false, true),
+              ]),
+            ]
+
             path.replaceWith(
               types.exportDefaultDeclaration(
                 types.arrowFunctionExpression(
@@ -94,6 +106,12 @@ const transformSvgToComponent = code =>
                       types.objectProperty(
                         types.identifier('as'),
                         types.assignmentPattern(types.identifier('Component'), types.stringLiteral('svg')),
+                        false,
+                        true
+                      ),
+                      types.objectProperty(
+                        types.identifier('children'),
+                        types.assignmentPattern(types.identifier('children'), children),
                         false,
                         true
                       ),
@@ -271,19 +289,13 @@ import { PictoContext } from '../core'
 import ${name} from '${origin}'
 
 export default function WrappedPicto(props) {
-  const { optimise, prefix, refresh } = useContext(PictoContext)
+  const { optimise, refresh } = useContext(PictoContext)
 
   useEffect(() => {
     refresh()
   }, [])
 
-  return optimise(
-    '${name}_' + prefix,
-    <${name} {...props} />,
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-      <use xlinkHref={'#${name}_' + prefix} />
-    </svg>
-  )
+  return optimise('${name}', <${name} {...props} />)
 }
 `
 

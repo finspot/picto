@@ -5,6 +5,7 @@ const glob = require('glob')
 const pascalcase = require('pascalcase')
 const path = require('path')
 const { optimize } = require('svgo')
+const sh = require('shorthash')
 const alias = require('@rollup/plugin-alias')
 const { uglify } = require('rollup-plugin-uglify')
 const { createFilter } = require('rollup-pluginutils')
@@ -286,6 +287,8 @@ module.exports = () => {
 
   const modules = inputs.reduce((previous, filename) => {
     const name = pascalcase(path.basename(filename, '.svg'))
+    const id = 'p_' + sh.unique(name)
+
     const origin = path.relative(outputPath, filename)
     const outputFile = path.join(outputPath, name + '.js')
 
@@ -301,7 +304,7 @@ export default function WrappedPicto(props) {
     refresh()
   }, [])
 
-  return optimise('${name}', <${name} {...props} />)
+  return optimise('${id}', <${name} {...props} />)
 }
 `
 

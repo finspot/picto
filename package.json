@@ -36,6 +36,7 @@
     "rollup-plugin-alias": "^2.2.0",
     "rollup-plugin-uglify": "^6.0.4",
     "rollup-pluginutils": "^2.8.2",
+    "shorthash": "^0.0.2",
     "svgo": "^2.2.2"
   },
   "peerDependencies": {

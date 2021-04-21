@@ -1,11 +1,7 @@
 import React, { cloneElement, createContext, useCallback, useRef, useState } from 'react'
-import { customAlphabet } from 'nanoid'
-
-const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 5)
 
 export const PictoContext = createContext({
   optimise: (id, node) => node,
-  prefix: nanoid(),
   refresh: () => {},
 })
 
@@ -14,21 +10,18 @@ export const PictoProvider = ({ children }) => {
 
   const cache = useRef({})
   const isPending = useRef(false)
-  const prefix = useRef(nanoid())
 
   const value = {
-    optimise(baseID, node) {
-      const prefixedID = baseID + '_' + prefix.current
-
-      if (!(prefixedID in cache.current)) {
-        cache.current = { ...cache.current, [prefixedID]: node }
+    optimise(id, node) {
+      if (!(id in cache.current)) {
+        cache.current = { ...cache.current, [id]: node }
         isPending.current = true
       }
 
       return cloneElement(
         node,
         { fill: null, xmlnsXlink: 'http://www.w3.org/1999/xlink' },
-        <use xlinkHref={'#' + prefixedID} />
+        <use xlinkHref={'#' + id} />
       )
     },
 

@@ -1,4 +1,4 @@
-const { transformSync } = require('@babel/core')
+const { transform } = require('@babel/core')
 const { babel } = require('@rollup/plugin-babel')
 const fs = require('fs-extra')
 const glob = require('glob')
@@ -11,6 +11,13 @@ const { createFilter } = require('rollup-pluginutils')
 
 const inputs = glob.sync(path.join(__dirname, 'svg/*.svg'))
 
+const optimizeSvg = async (pathname, options = {}) => {
+  const content = await fs.readFile(pathname, { encoding: 'utf8' })
+  const optimizedSvg = await optimize(content, options)
+
+  return optimizedSvg.data
+}
+
 const svg = options => {
   const filter = createFilter(options.include, options.exclude)
 
@@ -20,42 +27,38 @@ const svg = options => {
         return
       }
 
-      const content = fs.readFileSync(id).toString()
+      const svg = await optimizeSvg(id, options)
+      const component = await transformSvgToComponent(svg)
 
-      const { data } = await optimize(content, { ...options.svgo })
-      const result = transformSvgToComponent(data)
-
-      return result.code
+      return component
     },
   }
 }
 
 const svgConfig = {
-  svgo: {
-    plugins: [
-      {
-        name: 'removeAttrs',
-        params: {
-          attrs: 'fill',
-        },
+  plugins: [
+    {
+      name: 'removeAttrs',
+      params: {
+        attrs: 'fill',
       },
-      { active: false, name: 'removeViewBox' },
-      {
-        name: 'addAttributesToSVGElement',
-        params: {
-          attributes: [
-            {
-              fill: 'currentColor',
-            },
-          ],
-        },
+    },
+    { active: false, name: 'removeViewBox' },
+    {
+      name: 'addAttributesToSVGElement',
+      params: {
+        attributes: [
+          {
+            fill: 'currentColor',
+          },
+        ],
       },
-    ],
-  },
+    },
+  ],
 }
 
-const transformSvgToComponent = code =>
-  transformSync(code, {
+const transformSvgToComponent = code => {
+  const transformation = transform(code, {
     babelrc: false,
     configFile: false,
     plugins: [
@@ -151,6 +154,9 @@ const transformSvgToComponent = code =>
     ],
   })
 
+  return transformation.code
+}
+
 const cjs = modules => [
   ...Object.entries(modules).map(([name, { outputFile }]) => ({
     external: ['./core', 'react'],
@@ -181,7 +187,7 @@ const cjs = modules => [
   })),
 
   {
-    external: ['nanoid', 'react'],
+    external: ['react'],
 
     input: path.join(__dirname, 'core'),
 
@@ -202,7 +208,7 @@ const cjs = modules => [
   },
 
   {
-    external: ['nanoid', 'react'],
+    external: ['react'],
 
     input: path.join(__dirname, 'modules/index.js'),
 
@@ -225,7 +231,7 @@ const cjs = modules => [
   },
 
   {
-    external: ['nanoid', 'react'],
+    external: ['react'],
 
     input: path.join(__dirname, 'modules/index.js'),
 
@@ -252,7 +258,7 @@ const cjs = modules => [
 
 const esm = [
   {
-    external: [/@babel\/runtime/, 'nanoid', 'react'],
+    external: [/@babel\/runtime/, 'react'],
 
     input: path.join(__dirname, 'modules/index.js'),
 

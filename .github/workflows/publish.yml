@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish:
-    if: ${{ startsWith(github.event.head_commit.message, '[Release]') == true }}
+    if: ${{ startsWith(github.event.head_commit.message, '[CI]') == false }}
 
     runs-on: ubuntu-latest
 

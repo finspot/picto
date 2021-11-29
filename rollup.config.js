@@ -323,8 +323,17 @@ ${Object.keys(modules)
     fs.outputFileSync(path.join(outputPath, `${name}.js`), code)
   })
 
+  const types = `import * as React from 'react';
+
+${Object.entries(modules)
+  .map(([name]) => `export const ${name} = React.ComponentClass<React.SVGProps<SVGSVGElement>>;`)
+  .join('\n')}
+`
+
   fs.outputFileSync(path.join(outputPath, 'manifest.js'), manifest)
   fs.outputFileSync(path.join(outputPath, 'index.js'), index)
+
+  fs.outputFileSync(path.join(__dirname, 'index.d.ts'), types)
 
   return [...cjs(modules), ...esm]
 }

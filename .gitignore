@@ -133,3 +133,4 @@ cjs/
 esm/
 modules/
 public/
+index.d.ts

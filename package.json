@@ -1,15 +1,17 @@
 {
   "name": "@pretto/picto",
-  "version": "2.25.0",
+  "version": "3.0.0",
   "repository": "git@github.com:finspot/picto.git",
   "author": "Sylvain Reucherand <sylvain@pretto.fr>",
   "files": [
     "cjs",
     "esm",
+    "index.d.ts",
     "index.js"
   ],
   "main": "index.js",
   "module": "esm/picto.js",
+  "types": "index.d.ts",
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/plugin-syntax-jsx": "^7.12.13",
@@ -51,6 +53,7 @@
     "picto"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.13.10"
+    "@babel/runtime": "^7.13.10",
+    "@types/react": "*"
   }
 }

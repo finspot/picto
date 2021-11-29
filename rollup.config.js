@@ -326,7 +326,7 @@ ${Object.keys(modules)
   const types = `import * as React from 'react';
 
 ${Object.entries(modules)
-  .map(([name]) => `export const ${name} = React.ComponentClass<React.SVGProps<SVGSVGElement>>;`)
+  .map(([name]) => `export const ${name}: React.ComponentClass<React.SVGProps<SVGSVGElement>>;`)
   .join('\n')}
 `
 

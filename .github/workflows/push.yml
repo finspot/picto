@@ -1,4 +1,4 @@
-name: Publish
+name: Push
 
 on:
   push:
@@ -9,20 +9,19 @@ jobs:
   publish:
     if: ${{ startsWith(github.event.head_commit.message, '[CI]') == false }}
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: Setup
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '12'
-          registry-url: 'https://registry.npmjs.org'
+          node-version-file: .nvmrc
 
       - name: Config
         run: |
@@ -38,12 +37,6 @@ jobs:
           github_token: ${{ secrets.BOT_TOKEN }}
           branch: master
           tags: true
-
-      - name: Restore node_modules from cache
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Build library
         run: |

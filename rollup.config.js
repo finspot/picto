@@ -2,7 +2,6 @@ const { transform } = require('@babel/core')
 const { babel } = require('@rollup/plugin-babel')
 const fs = require('fs-extra')
 const glob = require('glob')
-const pascalcase = require('pascalcase')
 const path = require('path')
 const { optimize } = require('svgo')
 const sh = require('shorthash')
@@ -286,7 +285,7 @@ module.exports = () => {
   const outputPath = path.join(__dirname, 'modules')
 
   const modules = inputs.reduce((previous, filename) => {
-    const name = pascalcase(path.basename(filename, '.svg'))
+    const name = path.basename(filename, '.svg')
     const id = 'p_' + sh.unique(name)
 
     const origin = path.relative(outputPath, filename)

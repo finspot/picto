@@ -1,4 +1,4 @@
-name: Deploy
+name: Tags
 
 on:
   push:
@@ -7,11 +7,11 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build library
         run: |
@@ -30,3 +30,18 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.BOT_TOKEN }}
           BRANCH: gh-pages
           FOLDER: example/public
+
+  release:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+        with:
+          release_name: ${{ github.ref }}
+          tag_name: ${{ github.ref }}

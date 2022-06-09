@@ -8,29 +8,27 @@ Provides a pictogram set used by the design system and other tools.
 
 ### How to contribute?
 
-1. Add a new svg file under the svg folder
+1. Add a new svg file under the _./svg/_ folder
 
-Name it properly! The name defines the final export name of the component. Names are formatted into pascal case so *envelope.svg* will be imported like `import { Envelope } from '@pretto/picto'.` Avoid duplicates.
+Name it properly!
+
+- Name defines the importing name. (eg. `import { Envelope } from '@pretto/picto'`).
+- Names must be formatted in [pascalcase](https://techterms.com/definition/pascalcase).
+- Avoid duplicates.
 
 2. Open a pull request
 
-3. Name the pull request starting with `[Release]` if you wanna publish a new version automatically (you probably want to).
+3. Request a review
 
-### How to implement the library?
+4. Squash and merge
+
+### How to use the library?
 
 ```sh
 yarn add @pretto/picto
 ```
 
-index.js (preferred syntax)
-
-```jsx
-import * as P from '@pretto/picto'
-
-const myComponent = () => <P.Envelope />
-```
-
-index.js (alternative)
+- **Using named import**
 
 ```jsx
 import { Envelope } from '@pretto/picto'
@@ -38,12 +36,12 @@ import { Envelope } from '@pretto/picto'
 const myComponent = () => <Envelope />
 ```
 
-index.js (alternative)
+- **Using namespaces**
 
 ```jsx
-import Envelope from '@pretto/picto/cjs/Envelope'
+import * as P from '@pretto/picto'
 
-const myComponent = () => <Envelope />
+const myComponent = () => <P.Envelope />
 ```
 
 ### How to publish a new version?

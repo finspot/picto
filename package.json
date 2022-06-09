@@ -45,7 +45,8 @@
     "react": ">=15"
   },
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "test": "node test.js"
   },
   "sideEffects": false,
   "keywords": [

@@ -11,15 +11,16 @@ const unauthorizedPathnames = pathnames.filter(pathname => {
 })
 
 if (unauthorizedPathnames.length > 0) {
-  const errorMessage = `Incorrect naming for files :
-${unauthorizedPathnames.map(pathname => {
-  const relativePathname = path.relative(__dirname, pathname)
-  const dirname = path.dirname(relativePathname)
-  const basename = pascalcase(path.basename(pathname, '.svg'))
+  const errorMessage = `Incorrect naming for files:
+${unauthorizedPathnames
+  .map(pathname => {
+    const relativePathname = path.relative(__dirname, pathname)
+    const dirname = path.dirname(relativePathname)
+    const basename = pascalcase(path.basename(pathname, '.svg'))
 
-  return `- ./${relativePathname} (should be ./${path.join(dirname, basename)}.svg)
-`
-})}`
+    return `- ./${relativePathname} (must be ./${path.join(dirname, basename)}.svg)`
+  })
+  .join('\n')}`
 
   throw new Error(errorMessage)
 }

@@ -1,10 +1,10 @@
-import { manifest, PictoProvider } from '@pretto/picto'
-import * as P from '@pretto/picto'
-import React, { createElement, useState } from 'react'
+import * as picto from '@pretto/picto'
+
+import { createElement, useState } from 'react'
 
 import * as S from './styles'
 
-const copy = value => {
+const copy = (value: string) => {
   const input = document.createElement('input')
 
   document.body.appendChild(input)
@@ -19,7 +19,9 @@ const copy = value => {
   return success
 }
 
-const App = () => {
+const { manifest, PictoProvider, ...P } = picto
+
+export const App = () => {
   const [isAllVisible, setIsAllVisible] = useState(false)
 
   const handleShowMoreClick = () => {
@@ -59,5 +61,3 @@ const App = () => {
     </PictoProvider>
   )
 }
-
-export default App

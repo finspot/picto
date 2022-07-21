@@ -1,11 +1,10 @@
-/* global __non_webpack_require__ */
 import fs from 'fs'
 import path from 'path'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { ServerStyleSheet } from 'styled-components'
 
-import App from './App'
+import { App } from './App'
 
 const manifest = __non_webpack_require__('./manifest.json')
 

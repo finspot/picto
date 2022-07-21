@@ -21,7 +21,7 @@ module.exports = {
         options: {
           cacheDirectory: true,
         },
-        test: /\.js$/,
+        test: /\.tsx?$/,
       },
     ],
   },
@@ -43,6 +43,10 @@ module.exports = {
       TITLE: title,
     }),
   ],
+
+  resolve: {
+    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+  },
 
   stats: 'errors-warning',
 }

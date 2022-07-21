@@ -7,7 +7,7 @@
     "esm",
     "types"
   ],
-  "module": "esm/picto.js",
+  "exports": "esm/picto.js",
   "type": "module",
   "types": "types/modules/index.d.ts",
   "devDependencies": {

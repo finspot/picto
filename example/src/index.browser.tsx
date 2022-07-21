@@ -1,7 +1,7 @@
 import React from 'react'
-import { hydrate, render } from 'react-dom'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 
-import App from './App'
+import { App } from './App'
 
 const container = document.getElementById('__container')
 
@@ -10,7 +10,9 @@ if (!container) {
 
   document.body.appendChild(container)
 
-  render(<App />, container)
+  const root = createRoot(container)
+
+  root.render(<App />)
 } else {
-  hydrate(<App />, container)
+  hydrateRoot(container, <App />)
 }

@@ -8,10 +8,11 @@ const title = `${pkg.name} (v${pkg.version})`
 
 module.exports = {
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
     historyApiFallback: true,
-    hot: true,
     port: 8765,
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
   },
 
   devtool: 'eval',
@@ -28,7 +29,7 @@ module.exports = {
         options: {
           cacheDirectory: true,
         },
-        test: /\.js$/,
+        test: /\.tsx?/,
       },
     ],
   },
@@ -47,6 +48,10 @@ module.exports = {
       TITLE: title,
     }),
   ],
+
+  resolve: {
+    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+  },
 
   stats: 'errors-warning',
 }

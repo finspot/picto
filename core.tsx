@@ -1,18 +1,26 @@
 import React, { cloneElement, createContext, useCallback, useRef, useState } from 'react'
 
 export const PictoContext = createContext({
-  optimise: (id, node) => node,
+  optimise: (id: string, node: React.ReactElement) => node,
   refresh: () => {},
 })
 
-export const PictoProvider = ({ children }) => {
+interface Cache {
+  [id: string]: React.ReactElement
+}
+
+interface PictoProviderProps {
+  children: React.ReactNode
+}
+
+export const PictoProvider = ({ children }: PictoProviderProps) => {
   const forceUpdate = useForceUpdate()
 
-  const cache = useRef({})
+  const cache = useRef<Cache>({})
   const isPending = useRef(false)
 
   const value = {
-    optimise(id, node) {
+    optimise(id: string, node: React.ReactElement) {
       if (!(id in cache.current)) {
         cache.current = { ...cache.current, [id]: node }
         isPending.current = true
@@ -46,7 +54,11 @@ export const PictoProvider = ({ children }) => {
   )
 }
 
-const Symbols = ({ cache }) => {
+interface SymbolsProps {
+  cache: React.MutableRefObject<Cache>
+}
+
+const Symbols = ({ cache }: SymbolsProps) => {
   const entries = Object.entries(cache.current)
 
   if (entries.length < 1) {
@@ -63,7 +75,7 @@ const Symbols = ({ cache }) => {
 }
 
 const useForceUpdate = () => {
-  const [, updateState] = useState()
+  const [, updateState] = useState<any>()
   const forceUpdate = useCallback(() => updateState({}), [])
 
   return forceUpdate

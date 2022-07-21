@@ -22,7 +22,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: PascalCase
+      - name: Test
         run: |
           yarn
           yarn test

@@ -1,7 +1,9 @@
-const glob = require('glob')
-const path = require('path')
-const pascalcase = require('pascalcase')
+import glob from 'glob'
+import pascalcase from 'pascalcase'
+import path from 'path'
+import url from 'url'
 
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 const pathnames = glob.sync(path.join(__dirname, 'svg/*.svg'))
 
 const unauthorizedPathnames = pathnames.filter(pathname => {

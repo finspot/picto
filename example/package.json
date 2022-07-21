@@ -2,27 +2,31 @@
   "name": "example",
   "author": "Sylvain Reucherand <sylvain@pretto.fr>",
   "devDependencies": {
-    "@babel/core": "^7.12.10",
+    "@babel/core": "^7.18.9",
     "@pretto/picto": "../",
-    "babel-loader": "^8.2.2",
-    "babel-plugin-styled-components": "^1.12.0",
-    "babel-preset-react-app": "^10.0.0",
-    "html-webpack-plugin": "^4.5.1",
-    "terser-webpack-plugin": "^5.1.1",
-    "webpack": "^5.17.0",
-    "webpack-bundle-analyzer": "^4.4.0",
-    "webpack-cli": "^4.4.0",
-    "webpack-dev-server": "^3.11.2",
-    "webpack-manifest-plugin": "^3.1.0"
+    "@types/react-dom": "^18.0.6",
+    "babel-loader": "^8.2.5",
+    "babel-plugin-styled-components": "^2.0.7",
+    "babel-preset-react-app": "^10.0.1",
+    "html-webpack-plugin": "^5.5.0",
+    "terser-webpack-plugin": "^5.3.3",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.3",
+    "webpack-manifest-plugin": "^5.0.0"
   },
   "dependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "styled-components": "^5.2.1"
+    "@types/styled-components": "^5.1.25",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.5"
   },
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.production.browser.js --progress",
     "start": "NODE_ENV=development webpack serve --config webpack.config.development.browser.js --progress",
-    "static": "NODE_ENV=production webpack --config webpack.config.production.static.js --progress && node .bin/index"
+    "static": "NODE_ENV=production webpack --config webpack.config.production.static.js --progress && node .bin/index",
+    "test": "tsc --noEmit"
   }
 }

@@ -76,7 +76,7 @@ export const ${filename} = (props: React.SVGProps<SVGElement>): JSX.Element => {
     path.join(modulesPathname, 'manifest.ts'),
     `export type Picto = ${modules.map(({ filename }) => JSON.stringify(filename)).join(' | ')};
 
-export const manifest: (Picto)[] = ${JSON.stringify(
+export const manifest: Picto[] = ${JSON.stringify(
       modules.map(({ filename }) => filename),
       null,
       2

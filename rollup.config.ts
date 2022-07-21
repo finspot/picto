@@ -30,22 +30,26 @@ const svgConfig = {
   ],
 }
 
+interface Module {
+  code: string
+  filename: string
+  moduleFilename: string
+  modulePathname: string
+}
+
 export default () => {
   const modulesPathname = path.join(__dirname, 'modules')
 
-  const modules = glob
-    .sync(path.join(__dirname, 'svg/*.svg'))
-    .reduce<Array<{ code: string; filename: string; moduleFilename: string; modulePathname: string }>>(
-      (previous, pathname) => {
-        const filename = path.basename(pathname, '.svg')
-        const id = 'p_' + shorthash.unique(filename)
+  const modules = glob.sync(path.join(__dirname, 'svg/*.svg')).reduce<Array<Module>>((previous, pathname) => {
+    const filename = path.basename(pathname, '.svg')
+    const id = 'p_' + shorthash.unique(filename)
 
-        const originRelativePathname = path.relative(modulesPathname, pathname)
+    const originRelativePathname = path.relative(modulesPathname, pathname)
 
-        const moduleFilename = `${filename}.tsx`
-        const modulePathname = path.join(modulesPathname, moduleFilename)
+    const moduleFilename = `${filename}.tsx`
+    const modulePathname = path.join(modulesPathname, moduleFilename)
 
-        const code = `import React, { useContext, useEffect } from 'react';
+    const code = `import React, { useContext, useEffect } from 'react';
 
 import { PictoContext } from '../core';
 import SVGComponent from '${originRelativePathname}';
@@ -61,10 +65,8 @@ export const ${filename} = (props: React.SVGProps<SVGElement>): JSX.Element => {
 };
 `
 
-        return [...previous, { code, filename, moduleFilename, modulePathname }]
-      },
-      []
-    )
+    return [...previous, { code, filename, moduleFilename, modulePathname }]
+  }, [])
 
   modules.forEach(({ code, modulePathname }) => {
     fs.outputFileSync(modulePathname, code)

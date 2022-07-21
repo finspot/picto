@@ -75,7 +75,7 @@ const Symbols = ({ cache }: SymbolsProps) => {
 }
 
 const useForceUpdate = () => {
-  const [, updateState] = useState<any>()
+  const [, updateState] = useState<object>()
   const forceUpdate = useCallback(() => updateState({}), [])
 
   return forceUpdate

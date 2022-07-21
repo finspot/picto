@@ -74,9 +74,9 @@ export const ${filename} = (props: React.SVGProps<SVGElement>): JSX.Element => {
 
   fs.outputFileSync(
     path.join(modulesPathname, 'manifest.ts'),
-    `export const manifest: (${modules
-      .map(({ filename }) => JSON.stringify(filename))
-      .join(' | ')})[] = ${JSON.stringify(
+    `export type Picto = ${modules.map(({ filename }) => JSON.stringify(filename)).join(' | ')};
+
+export const manifest: (Picto)[] = ${JSON.stringify(
       modules.map(({ filename }) => filename),
       null,
       2
@@ -88,6 +88,7 @@ export const ${filename} = (props: React.SVGProps<SVGElement>): JSX.Element => {
     path.join(modulesPathname, 'index.ts'),
     `export { PictoProvider } from '../core';
 export { manifest } from './manifest'
+export type { Picto } from './manifest'
 ${modules.map(({ filename }) => `export { ${filename} } from './${filename}';`).join('\n')}
 `
   )

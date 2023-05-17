@@ -38,7 +38,7 @@ export const App = () => {
         <S.Grid>
           {manifest.slice(0, isAllVisible ? Infinity : 20).map(key => {
             const handleClick = () => {
-              copy(`<P.${key} />`)
+              copy(key)
             }
 
             return (

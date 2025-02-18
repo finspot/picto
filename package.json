@@ -7,7 +7,7 @@
     "esm",
     "types"
   ],
-  "exports": "esm/picto.js",
+  "exports": "./esm/picto.js",
   "main": "esm/picto.js",
   "type": "module",
   "types": "types/modules/index.d.ts",
